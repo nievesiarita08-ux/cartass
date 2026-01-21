@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para vos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    h1, h2 { font-family: 'Playfair Display', serif; }.envelope {
+  position: relative;
+  width: 100%;
+  background: #f3eee8; /* cremita */
+  border-radius: 1rem;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.envelope.locked {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.envelope:hover:not(.locked) {
+  transform: scale(1.01);
+}
+
+.heart {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.2rem;
+  color: #ffffff; /* blanco */
+  text-shadow: 0 0 3px rgba(0,0,0,0.2);
+}
+
+.letter-content {
+  display: none;
+  margin-top: 1rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.envelope.open .letter-content {
+  display: block;
+}
+
+.envelope.open .closed-text {
+  display: none;
+}
+
+.closed-text {
+  color: #777;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* Animaciones */
+.floating-heart, .kiss {
+  position: fixed;
+  font-size: 1.2rem;
+  pointer-events: none;
+  animation: floatUp 2.5s linear forwards;
+  opacity: 0.9;
+  z-index: 50;
+}
+
+.kiss {
+  font-size: 1.4rem;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to { transform: translateY(-150px) scale(1.4); opacity: 0; }
+}
+
+  </style>
+</head>
+<body class="bg-[#f6f4f1] min-h-screen flex items-center justify-center p-4">  <div class="max-w-md w-full space-y-6"><!-- Portada -->
+<div class="bg-white rounded-2xl shadow p-6 text-center">
+  <h1 class="text-2xl mb-2">Para mi futuro novio y esposo 🤍</h1>
+  <p class="text-gray-600">(dijeras vos jaja) te amo mucho, y bueno esta es una manera q tengo de demostrártelo, espero te guste mucho.</p>
+</div>
+
+<!-- Carta 1 -->
+<div class="envelope" data-index="0" onclick="openLetter(this)">
+  <div class="heart">❤</div>
+  <h2 class="text-lg">Carta 1</h2>
+  <p class="closed-text">Tocá para abrir esta carta</p>
+  <div class="letter-content">
+    <p>
+      No soy muy buena diciendo estas cosas en voz alta capaz, así que voy a tratar de escribirlas.
+    </p>
+  </div>
+</div>
+
+<!-- Carta 2 -->
+<div class="envelope locked" data-index="1" onclick="openLetter(this)">
+  <div class="heart">❤</div>
+  <h2 class="text-lg">Carta 2</h2>
+  <p class="closed-text">Primero abrí la Carta 1</p>
+  <div class="letter-content">
+    <p>
+      A veces no digo nada, pero te pienso más de lo que creés.
+      Me quedo con tus gestos simples, con tus miradas,
+      con esas cosas chiquitas que son las que más importan porque son las que mejor me hacen sentir.
+      Siempre te lo digo pero tus abrazos son los más lindos que me han dado, me hacen sentir segura totalmente,
+      me dan ganas de quedarme ahí toda mi vida y tus besos en mi frente… ay Dios,
+      hacen que se me reinicie todo y vuelva a ser una nena de vuelta.
+    </p>
+  </div>
+</div>
+
+<!-- Carta 3 -->
+<div class="envelope locked" data-index="2" onclick="openLetter(this)">
+  <div class="heart">❤</div>
+  <h2 class="text-lg">Carta 3</h2>
+  <p class="closed-text">Primero abrí la Carta 2</p>
+  <div class="letter-content">
+    <p>
+      No prometo perfección, pero sí estar.
+      Seguir eligiéndote y cuidarte de la forma más sincera que sé.
+      Tal vez ya no sepa demostrar mucho el amor que te tengo, pero creeme que es totalmente sincero.
+      Sé que con las palabras no hago nada, así que espero demostrártelo totalmente.
+      Te amo Tiago 🤍
+    </p>
+  </div>
+</div>
+
+<!-- Cierre -->
+<div class="bg-white rounded-2xl shadow p-5 text-center">
+  <p class="text-gray-700">Con todo el amor que te tengo,</p>
+  <p class="mt-2">Iara.</p>
+</div>
+
+  </div>  <script>
+    let currentOpen = -1;
+
+    function openLetter(element) {
+      const index = parseInt(element.dataset.index);
+
+      if (index !== currentOpen + 1) return;
+
+      const all = document.querySelectorAll('.envelope');
+      all.forEach(env => env.classList.remove('open'));
+
+      element.classList.add('open');
+      currentOpen = index;
+
+      // Besos al abrir
+      for (let i = 0; i < 15; i++) {
+        createKiss();
+      }
+
+      const next = document.querySelector(`.envelope[data-index="${index + 1}"]`);
+      if (next) {
+        next.classList.remove('locked');
+        const hint = next.querySelector('.closed-text');
+        hint.textContent = 'Tocá para abrir esta carta';
+      }
+    }
+
+    function createKiss() {
+      const kiss = document.createElement('div');
+      kiss.className = 'kiss';
+      kiss.textContent = '💋';
+      kiss.style.left = Math.random() * window.innerWidth + 'px';
+      kiss.style.top = window.innerHeight - 50 + 'px';
+      document.body.appendChild(kiss);
+
+      setTimeout(() => kiss.remove(), 2500);
+    }
+
+    // Corazones al entrar
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'floating-heart';
+      heart.textContent = '🤍';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.top = window.innerHeight + 'px';
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 2500);
+    }
+
+    window.onload = () => {
+      for (let i = 0; i < 25; i++) {
+        setTimeout(createHeart, i * 100);
+      }
+    }
+  </script></body>
+</html>
